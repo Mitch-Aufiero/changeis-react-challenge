@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import type { Company } from "../types/CompanyInterfaces";
+import type { Company } from "../interfaces/CompanyInterfaces";
 
 interface CompanyCardProps{
     
