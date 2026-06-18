@@ -11,7 +11,6 @@ export async function fetchCompanies(quantity: number): Promise<Company[]> {
   }
 
   const json = await response.json();
-  console.log(json)
 
   if (!json || !Array.isArray(json.data)) {
     throw new Error('Invalid API response format: expected data array');
