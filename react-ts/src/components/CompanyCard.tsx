@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import type { Company } from "../interfaces/CompanyInterfaces";
+import type { Company } from "../types/CompanyInterfaces";
 
 interface CompanyCardProps{
     
@@ -14,7 +14,6 @@ const Card = styled.div`
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 24px;
-  max-width: 360px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,

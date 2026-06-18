@@ -1,12 +1,37 @@
 import { useState, useEffect,  useRef} from 'react';
+import styled from 'styled-components';
 
 import CompanyCard from './components/CompanyCard';
 import type { Company } from './types/Company';
 
 
 
+const Page = styled.div`
+  min-height: 100vh;
+  background: #989fa7;
+  padding: 40px 24px;
+`;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+const StatusMessage = styled.div`
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  font-family: system-ui, sans-serif;
+  color: ${(props) => (props.$isError ? '#dc2626' : '#334155')};
+`;
+
+
+
 function App() {
-  const [company, setCompany] = useState<Company | null>(null);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const hasFetched = useRef(false);
@@ -16,10 +41,10 @@ function App() {
     if (hasFetched.current) return;
     hasFetched.current = true;
 
-    const fetchCompany = async () => {
+    const fetchCompanies = async () => {
       try {
         const response = await fetch(
-          'https://fakerapi.it/api/v2/companies?_quantity=1'
+          'https://fakerapi.it/api/v2/companies?_quantity=12'
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -31,7 +56,7 @@ function App() {
           throw new Error('No company data returned from API');
         }
 
-        setCompany(data[0]);
+        setCompanies(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');
       } finally {
@@ -39,7 +64,7 @@ function App() {
       }
     };
 
-    fetchCompany();
+    fetchCompanies();
   }, []);
 
   
@@ -47,17 +72,9 @@ function App() {
   if (loading) {
     return ( 
 
-      <div
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#f8fafc',
-        }}
-      >
+      <StatusMessage>
         Loading...
-      </div>
+      </StatusMessage>
 
     );
   }
@@ -65,35 +82,22 @@ function App() {
   if (error) {
     return (
 
-      <div
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#f8fafc',
-          color: '#dc2626',
-        }}
-      >
+      <StatusMessage $isError>
         Error: {error}
-      </div>
+      </StatusMessage>
 
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#f8fafc',
-        padding: '24px',
-      }}
-    >
-      {company && <CompanyCard company={company} />}
-    </div>
+     <Page>
+      <Grid>
+        {companies.map((company) => (
+          <CompanyCard key={company.id} company={company} />
+        ))}
+      </Grid>
+    </Page>
+
   );
 }
 
