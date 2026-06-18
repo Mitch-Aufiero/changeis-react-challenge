@@ -22,7 +22,7 @@ export interface Contact{
     lastname: string;
     email: string;
     phone: string;
-    bbirthday: string;
+    birthday: string;
     gender: string;
     address: Address;
     website: string;
